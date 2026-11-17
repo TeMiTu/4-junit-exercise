@@ -67,4 +67,36 @@ public class DayOfYear {
 
         return dayOfMonth;
     }
+
+    public static int dayOfYearFixed(int month, int dayOfMonth, int year){
+        //tarkistaa onko vuosi karkausvuosi
+        boolean karkausvuosi;
+        if(year % 400 == 0 || year % 4 == 0 && year % 100 != 0){
+            karkausvuosi = true;
+        }
+        else{
+            karkausvuosi = false;
+        }
+        //tarkistaa paivamaaran, jos 29.2 mutta ei karkausvuosi, antaa virheen
+        if(month == 2 && dayOfMonth == 29 && karkausvuosi == false){
+            throw new IllegalArgumentException("Päivää ei ole olemassa");
+        }
+
+        //taulukko kuukausien pituuksista
+        int[] kuukaudet = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int paivanumero = 0;
+
+        for(int i = 0; i < month - 1; i++){
+            int kuukaudenPaivat = kuukaudet[i];
+            paivanumero += kuukaudenPaivat;
+        }
+        paivanumero = paivanumero + dayOfMonth;
+        
+        if(karkausvuosi == true && month >= 3){
+            paivanumero = paivanumero + 1;
+        }
+        return paivanumero;
+
+
+    }
 }
